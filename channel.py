@@ -497,27 +497,11 @@ class Channel(Gtk.Box, SerializedObject):
     def read_meter(self):
         if not self.channel:
             return
-        if self.stereo:
-            if self.meter_prefader:
-                peak_left, peak_right, rms_left, rms_right = self.channel.kmeter_prefader
-                self.channel.kmeter_postfader
-            else:
-                peak_left, peak_right, rms_left, rms_right = self.channel.kmeter_postfader
-                self.channel.kmeter_prefader
-            self.meter.set_values(peak_left, peak_right, rms_left, rms_right)
-        else:
-            if self.meter_prefader:
-                peak, rms = self.channel.kmeter_prefader
-                self.channel.kmeter_postfader
-            else:
-                peak, rms = self.channel.kmeter_postfader
-                self.channel.kmeter_prefader
-            self.meter.set_values(peak, rms)
 
-        if self.meter_prefader:
-            self.abspeak.set_peak(self.channel.abspeak_prefader)
-        else:
-            self.abspeak.set_peak(self.channel.abspeak_postfader)
+        self.meter.set_values(*(self.channel.kmeter_prefader if self.meter_prefader else
+                              self.channel.kmeter_postfader))
+        self.abspeak.set_peak(self.channel.abspeak_prefader if self.meter_prefader else
+                              self.channel.abspeak_postfader)
 
     def update_volume(self, update_engine, from_midi=False):
         db = self.slider_adjustment.get_value_db()
@@ -822,7 +806,6 @@ class OutputChannel(Channel):
         self.create_fader()
 
         # Widgets
-
         self.create_buttons()
 
         # add control groups to the input channels, and initialize them
