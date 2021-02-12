@@ -64,7 +64,6 @@ class Channel(Gtk.Box, SerializedObject):
         self.label_name = None
         self.wide = True
         self.meter_prefader = False
-        self.prefader_button = None
         self.label_chars_wide = 12
         self.label_chars_narrow = 7
         self.channel_properties_dialog = None
