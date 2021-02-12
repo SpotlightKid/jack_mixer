@@ -678,7 +678,7 @@ Franklin Street, Fifth Floor, Boston, MA 02110-130159 USA"""
 
     def on_prefader_meters_cb(self, widget):
         for channel in self.channels + self.output_channels:
-            channel.use_prefader_metering()
+            channel.use_prefader_metering(True)
 
     def on_postfader_meters_cb(self, widget):
         for channel in self.channels + self.output_channels:
